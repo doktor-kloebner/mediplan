@@ -1,0 +1,20 @@
+{
+  "name": "mediplan",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "dev": "pnpm --filter uc1-mediorder dev",
+    "build": "pnpm --filter uc1-mediorder build",
+    "typecheck": "tsc --build"
+  },
+  "devDependencies": {
+    "happy-dom": "^20.5.0",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.4"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
+  }
+}
