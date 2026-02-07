@@ -78,9 +78,22 @@ export function PlanScreen({ id }: { id: number }) {
         {showXml.value ? 'XML ausblenden' : 'XML anzeigen'}
       </button>
       {showXml.value && stored.value?.rawXml && (
-        <pre style={{ fontSize: '0.7em', overflow: 'auto', background: '#f5f5f5', padding: '8px', borderRadius: '4px', marginBottom: '12px', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
-          {formatXml(stored.value.rawXml)}
-        </pre>
+        <div>
+          <pre style={{ fontSize: '0.7em', overflow: 'auto', background: '#f5f5f5', padding: '8px', borderRadius: '4px', marginBottom: '8px', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+            {formatXml(stored.value.rawXml)}
+          </pre>
+          <button
+            class="btn"
+            style={{ fontSize: '0.8em', padding: '2px 8px', marginBottom: '12px' }}
+            onClick={() => {
+              const subject = encodeURIComponent(`BMP XML – ${bmp.patient.givenName} ${bmp.patient.familyName}`);
+              const body = encodeURIComponent(stored.value!.rawXml);
+              window.open(`mailto:?subject=${subject}&body=${body}`);
+            }}
+          >
+            XML per E-Mail senden
+          </button>
+        </div>
       )}
 
       {/* Observations */}
