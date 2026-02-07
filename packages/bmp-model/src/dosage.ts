@@ -34,9 +34,7 @@ export function parseDosageFields(
   night?: string,
   freeText?: string,
 ): DosageStructured | DosageFreeText | undefined {
-  if (freeText) {
-    return { type: 'freeText', text: freeText };
-  }
+  // Structured fields take priority — some PVS systems set both m/d/v/h and du redundantly
   if (morning !== undefined || noon !== undefined || evening !== undefined || night !== undefined) {
     return {
       type: 'structured',
@@ -45,6 +43,9 @@ export function parseDosageFields(
       evening: evening ?? '0',
       night: night ?? '0',
     };
+  }
+  if (freeText) {
+    return { type: 'freeText', text: freeText };
   }
   return undefined;
 }

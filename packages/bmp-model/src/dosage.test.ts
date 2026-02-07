@@ -33,9 +33,11 @@ describe('parseDosageFields', () => {
     expect(result).toEqual({ type: 'freeText', text: 'bei Bedarf' });
   });
 
-  it('prefers free-text over structured when both present', () => {
-    const result = parseDosageFields('1', '0', '0', '0', 'bei Bedarf');
-    expect(result?.type).toBe('freeText');
+  it('prefers structured over free-text when both present', () => {
+    // Some PVS systems redundantly set both m/d/v/h and du — structured wins
+    const result = parseDosageFields('1', '0', '0', '0', '1');
+    expect(result?.type).toBe('structured');
+    expect((result as any).morning).toBe('1');
   });
 
   it('defaults missing slots to "0"', () => {

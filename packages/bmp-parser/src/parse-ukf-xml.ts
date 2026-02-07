@@ -115,7 +115,7 @@ function parseMedication(el: Element): Medication {
       attr(el, 'd') ?? undefined,
       attr(el, 'v') ?? undefined,
       attr(el, 'h') ?? undefined,
-      attr(el, 'du') ?? undefined,
+      attr(el, 'du') ?? attr(el, 't') ?? undefined,
     ),
     unit: attr(el, 'e') ?? undefined,
     instructions: attr(el, 'i') ?? undefined,
