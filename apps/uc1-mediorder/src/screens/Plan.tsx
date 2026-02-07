@@ -69,33 +69,6 @@ export function PlanScreen({ id }: { id: number }) {
         <div class="meta">erstellt von {bmp.author.name}{bmp.author.printTimestamp && <>, {formatDate(bmp.author.printTimestamp)}</>}</div>
       </div>
 
-      {/* Raw XML debug */}
-      <button
-        class="btn"
-        style={{ fontSize: '0.8em', padding: '2px 8px', marginBottom: '8px' }}
-        onClick={() => { showXml.value = !showXml.value; }}
-      >
-        {showXml.value ? 'XML ausblenden' : 'XML anzeigen'}
-      </button>
-      {showXml.value && stored.value?.rawXml && (
-        <div>
-          <pre style={{ fontSize: '0.7em', overflow: 'auto', background: '#f5f5f5', padding: '8px', borderRadius: '4px', marginBottom: '8px', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
-            {formatXml(stored.value.rawXml)}
-          </pre>
-          <button
-            class="btn"
-            style={{ fontSize: '0.8em', padding: '2px 8px', marginBottom: '12px' }}
-            onClick={() => {
-              const subject = encodeURIComponent(`BMP XML – ${bmp.patient.givenName} ${bmp.patient.familyName}`);
-              const body = encodeURIComponent(stored.value!.rawXml);
-              window.open(`mailto:?subject=${subject}&body=${body}`);
-            }}
-          >
-            XML per E-Mail senden
-          </button>
-        </div>
-      )}
-
       {/* Observations */}
       {bmp.observations.allergies && (
         <div class="error-msg" style={{ marginBottom: '16px' }}>
@@ -149,6 +122,35 @@ export function PlanScreen({ id }: { id: number }) {
           })}
         </div>
       ))}
+
+      {/* Raw XML debug */}
+      <div style={{ marginTop: '24px' }}>
+        <button
+          class="btn"
+          style={{ fontSize: '0.8em', padding: '2px 8px', marginBottom: '8px' }}
+          onClick={() => { showXml.value = !showXml.value; }}
+        >
+          {showXml.value ? 'XML ausblenden' : 'XML anzeigen'}
+        </button>
+        {showXml.value && stored.value?.rawXml && (
+          <div>
+            <pre style={{ fontSize: '0.7em', overflow: 'auto', background: '#f5f5f5', padding: '8px', borderRadius: '4px', marginBottom: '8px', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+              {formatXml(stored.value.rawXml)}
+            </pre>
+            <button
+              class="btn"
+              style={{ fontSize: '0.8em', padding: '2px 8px', marginBottom: '12px' }}
+              onClick={() => {
+                const subject = encodeURIComponent(`BMP XML – ${bmp.patient.givenName} ${bmp.patient.familyName}`);
+                const body = encodeURIComponent(stored.value!.rawXml);
+                window.open(`mailto:?subject=${subject}&body=${body}`);
+              }}
+            >
+              XML per E-Mail senden
+            </button>
+          </div>
+        )}
+      </div>
 
       {/* Sticky order button */}
       <div class="sticky-bottom">
