@@ -186,9 +186,11 @@ function MedicationCard({ med }: { med: Medication }) {
 }
 
 function formatDate(raw: string): string {
-  if (raw.length >= 8) {
-    return `${raw.slice(6, 8)}.${raw.slice(4, 6)}.${raw.slice(0, 4)}`;
-  }
+  // ISO-ish: "2026-02-07 17:09" or "2026-02-07"
+  const isoMatch = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (isoMatch) return `${isoMatch[3]}.${isoMatch[2]}.${isoMatch[1]}`;
+  // Compact: "20260207" or "20260207170900"
+  if (/^\d{8}/.test(raw)) return `${raw.slice(6, 8)}.${raw.slice(4, 6)}.${raw.slice(0, 4)}`;
   return raw;
 }
 
