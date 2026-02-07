@@ -12,10 +12,10 @@ export function Header() {
           Scan
         </a>
         <a href="#/history" aria-current={current === '/history' ? 'page' : undefined}>
-          Verlauf
+          MedPlan
         </a>
         <a href="#/settings" aria-current={current === '/settings' ? 'page' : undefined}>
-          Einst.
+          ⚙
         </a>
       </nav>
     </header>

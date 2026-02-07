@@ -56,7 +56,7 @@ export function HistoryScreen() {
 
   return (
     <div>
-      <h2>Verlauf</h2>
+      <h2>Aktueller Medikationsplan</h2>
 
       {/* Most recent BMP — medically relevant */}
       <div style={{ marginTop: '16px' }}>
