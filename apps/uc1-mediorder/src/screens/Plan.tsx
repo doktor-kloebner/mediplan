@@ -64,11 +64,8 @@ export function PlanScreen({ id }: { id: number }) {
     <div>
       {/* Patient info */}
       <div class="patient-bar">
-        <strong>{bmp.patient.givenName} {bmp.patient.familyName}</strong>
-        <div class="meta">
-          {bmp.patient.birthDate && <>Geb.: {formatBirthDate(bmp.patient.birthDate)} &middot; </>}
-          {bmp.author.name}
-        </div>
+        <div><strong>{bmp.patient.givenName} {bmp.patient.familyName}</strong>{bmp.patient.birthDate && <>, geb. {formatDate(bmp.patient.birthDate)}</>}</div>
+        <div class="meta">{bmp.author.name}{bmp.author.printTimestamp && <>, {formatDate(bmp.author.printTimestamp)}</>}</div>
       </div>
 
       {/* Observations */}
@@ -160,8 +157,8 @@ function MedicationCard({ med }: { med: Medication }) {
   );
 }
 
-function formatBirthDate(raw: string): string {
-  if (raw.length === 8) {
+function formatDate(raw: string): string {
+  if (raw.length >= 8) {
     return `${raw.slice(6, 8)}.${raw.slice(4, 6)}.${raw.slice(0, 4)}`;
   }
   return raw;
