@@ -181,12 +181,12 @@ const DEMO_XML = `<?xml version="1.0" encoding="UTF-8"?>
 <MP v="025" U="20250514112900DEMOKLINIK000001" l="de">
   <P g="Max" f="Mustermann" b="19550315" s="M"/>
   <A n="Musterklinik, Innere Medizin" s="Musterstr. 1" z="12345" c="Musterstadt" p="0123 456789" t="20250514112900"/>
-  <O w="75" h="173"/>
+  <O w="80" h="178" ai="Penicillin"/>
   <S c="411">
     <M a="Pantoprazol - 1A Pharma 40 mg magensaftresistent" f="TAB" m="1" d="0" v="0" h="0" e="Tbl">
       <W w="Pantoprazol" s="40 mg"/>
     </M>
-    <M a="Forxiga 10 mg Filmtabletten - OP28" f="TAB" m="1" d="0" v="0" h="0" e="Tbl">
+    <M p="10330201" f="TAB" m="1" d="0" v="0" h="0" e="Tbl">
       <W w="Dapagliflozin" s="10 mg"/>
     </M>
     <M a="Clopidogrel STADA 75 mg Filmtabletten" f="TAB" m="1" d="0" v="0" h="0" e="Tbl">
@@ -195,30 +195,22 @@ const DEMO_XML = `<?xml version="1.0" encoding="UTF-8"?>
     <M a="ASS 100 HEXAL" f="TAB" m="1" d="0" v="0" h="0" e="Tbl">
       <W w="Acetylsalicylsäure" s="100 mg"/>
     </M>
-    <M a="Ferro sanol duodenal 100mg Hartkapseln" f="KAP" m="1" d="0" v="0" h="0" e="Kps">
-      <W w="Eisen(II)-Ion" s="100 mg"/>
+    <M a="Metoprolol 47,5 mg Retardtabletten" f="TAB" m="1" d="0" v="0" h="0" e="Tbl">
+      <W w="Metoprololsuccinat" s="47,5 mg"/>
     </M>
-    <M a="Natrilix" f="TAB" m="1" d="0" v="0" h="0" e="Tbl">
-      <W w="Indapamid" s="2,5 mg"/>
-    </M>
-    <M a="BisoHEXAL 2,5 mg Filmtabletten" f="TAB" m="1" d="0" v="0" h="0" e="Tbl">
-      <W w="Bisoprololfumarat" s="2,5 mg"/>
-    </M>
-    <M a="Lercanidipin Puren 10 mg Filmtabletten" f="TAB" m="1" d="0" v="0" h="0" e="Tbl">
-      <W w="Lercanidipin" s="9,4 mg"/>
+    <M a="Ramipril 5 mg Tabletten" f="TAB" m="1" d="0" v="1" h="0" e="Tbl" r="Bluthochdruck">
+      <W w="Ramipril" s="5 mg"/>
     </M>
     <M a="Atorvastatin HEXAL 20 mg Filmtabletten" f="TAB" m="0" d="0" v="1" h="0" e="Tbl">
       <W w="Atorvastatin" s="20 mg"/>
     </M>
-    <M a="Kabi 4 g/0,5 g Pulver zur Infusion" f="INF" m="4,5" d="4,5" v="4,5" h="4,5" e="g" r="postoperative Infektion, unklare Genese" i="Enddatum: 17.05.2025">
-      <W w="Piperacillin" s="4 g"/>
-      <W w="Tazobactam" s="0,5 g"/>
+    <M a="Amoxicillin 1000 mg Filmtabletten" f="TAB" m="1" d="1" v="1" h="0" e="Tbl" r="Bronchitis" i="Enddatum: 21.05.2025">
+      <W w="Amoxicillin" s="1000 mg"/>
     </M>
   </S>
   <S c="412">
-    <M a="Tilidin HEXAL comp 50/4 mg Retardtabletten" f="TAB" du="Bedarfsmedikation: Schmerzen; 1 Tbl je Einnahme Maximum je 24 h: 2 Tbl" e="Tbl">
-      <W w="Tilidin" s="44,1 mg"/>
-      <W w="Naloxonhydrochlorid" s="4 mg"/>
+    <M a="Ibuprofen 600 mg Filmtabletten" f="TAB" du="bei Bedarf, max. 3x tgl." e="Tbl">
+      <W w="Ibuprofen" s="600 mg"/>
     </M>
   </S>
 </MP>`;
