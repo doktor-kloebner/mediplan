@@ -4,3 +4,13 @@ dist/
 *.local
 .DS_Store
 .claude/
+*.pem
+
+# Patient data — never commit
+Rezepte*
+sampleBMP*.pdf
+sample-DataMatrix.pdf
+
+# Server runtime cache
+tools/pzn-cache.json
+tools/rezepte-pzn.json

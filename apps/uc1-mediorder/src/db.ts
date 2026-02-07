@@ -1,5 +1,5 @@
 import Dexie, { type EntityTable } from 'dexie';
-import type { Bmp } from '@mediplan/bmp-model';
+import type { Bmp, ActiveIngredient } from '@mediplan/bmp-model';
 
 export interface StoredBmp {
   id?: number;
@@ -16,14 +16,26 @@ export interface AppSetting {
   value: string;
 }
 
+export interface PznCacheEntry {
+  pzn: string;
+  info: {
+    brandName: string;
+    activeIngredients: ActiveIngredient[];
+    formCode?: string;
+  };
+  fetchedAt: Date;
+}
+
 const db = new Dexie('mediorder') as Dexie & {
   bmps: EntityTable<StoredBmp, 'id'>;
   settings: EntityTable<AppSetting, 'key'>;
+  pznCache: EntityTable<PznCacheEntry, 'pzn'>;
 };
 
-db.version(1).stores({
+db.version(2).stores({
   bmps: '++id, uuid, scannedAt',
   settings: 'key',
+  pznCache: 'pzn',
 });
 
 export { db };
@@ -59,6 +71,10 @@ export async function getSetting(key: string): Promise<string | undefined> {
 
 export async function setSetting(key: string, value: string): Promise<void> {
   await db.settings.put({ key, value });
+}
+
+export async function updateStoredBmp(id: number, bmp: Bmp): Promise<void> {
+  await db.bmps.update(id, { bmp });
 }
 
 export async function clearAllData(): Promise<void> {

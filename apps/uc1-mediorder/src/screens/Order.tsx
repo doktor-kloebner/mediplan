@@ -140,7 +140,7 @@ export function buildMailtoUri(
   lines.push('');
 
   medications.forEach((med, i) => {
-    const name = med.brandName || med.activeIngredients.map(a => a.name).join(', ');
+    const name = med.brandName || med.activeIngredients.map(a => a.name).join(', ') || `PZN ${med.pzn || 'unbekannt'}`;
     lines.push(`${i + 1}. ${name}`);
     if (med.pzn) lines.push(`   PZN: ${med.pzn}`);
     if (med.activeIngredients.length > 0) {

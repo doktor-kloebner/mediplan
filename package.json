@@ -7,7 +7,8 @@
     "test:watch": "vitest",
     "dev": "pnpm --filter uc1-mediorder dev",
     "build": "pnpm --filter uc1-mediorder build",
-    "typecheck": "tsc --build"
+    "typecheck": "tsc --build",
+    "generate:pzn": "npx tsx tools/parse-festbetraege.ts"
   },
   "devDependencies": {
     "happy-dom": "^20.5.0",
