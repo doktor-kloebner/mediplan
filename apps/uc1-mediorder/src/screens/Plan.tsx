@@ -1,14 +1,12 @@
 import { signal, computed } from '@preact/signals';
 import { useEffect } from 'preact/hooks';
 import { navigate } from '../router';
-import { getStoredBmp, updateStoredBmp, type StoredBmp } from '../db';
+import { getStoredBmp, type StoredBmp } from '../db';
 import { getSectionLabel, formatDosage, type Medication, type Section } from '@mediplan/bmp-model';
-import { manualLookupPzn } from '../pzn-lookup';
 
 const stored = signal<StoredBmp | null>(null);
 const loading = signal(true);
 const selectedMeds = signal<Set<string>>(new Set());
-const resolvingPzns = signal<Set<string>>(new Set());
 
 /** Create a stable key for a medication within the plan. */
 function medKey(sectionIndex: number, entryIndex: number): string {
@@ -19,7 +17,6 @@ export function PlanScreen({ id }: { id: number }) {
   useEffect(() => {
     loading.value = true;
     selectedMeds.value = new Set();
-    resolvingPzns.value = new Set();
     getStoredBmp(id).then((result) => {
       stored.value = result ?? null;
       loading.value = false;
@@ -60,39 +57,6 @@ export function PlanScreen({ id }: { id: number }) {
       selectedMeds.value = new Set();
     } else {
       selectedMeds.value = allKeys;
-    }
-  }
-
-  async function resolvePzn(med: Medication) {
-    if (!med.pzn) return;
-    const pzn = med.pzn;
-
-    // Mark as resolving
-    const next = new Set(resolvingPzns.value);
-    next.add(pzn);
-    resolvingPzns.value = next;
-
-    try {
-      const info = await manualLookupPzn(pzn);
-      if (info) {
-        if (!med.brandName) med.brandName = info.brandName;
-        if (med.activeIngredients.length === 0) med.activeIngredients = info.activeIngredients;
-        if (!med.formCode && info.formCode) med.formCode = info.formCode;
-        // Persist to IndexedDB
-        if (stored.value?.id != null) {
-          await updateStoredBmp(stored.value.id, bmp);
-        }
-        // Trigger re-render
-        stored.value = { ...stored.value! };
-      } else {
-        alert(`PZN ${pzn} konnte nicht aufgelöst werden. Ist der PZN-Server gestartet? (node tools/pzn-server.mjs)`);
-      }
-    } catch {
-      alert(`Fehler beim Auflösen von PZN ${pzn}.`);
-    } finally {
-      const updated = new Set(resolvingPzns.value);
-      updated.delete(pzn);
-      resolvingPzns.value = updated;
     }
   }
 
@@ -143,7 +107,7 @@ export function PlanScreen({ id }: { id: number }) {
                       onChange={() => toggleMed(key)}
                     />
                     <div>
-                      <MedicationCard med={entry} onResolve={resolvePzn} />
+                      <MedicationCard med={entry} />
                     </div>
                   </label>
                 </div>
@@ -175,33 +139,14 @@ export function PlanScreen({ id }: { id: number }) {
   );
 }
 
-function MedicationCard({ med, onResolve }: { med: Medication; onResolve: (med: Medication) => void }) {
-  const isUnresolved = med.pzn && !med.brandName && med.activeIngredients.length === 0;
-  const isResolving = med.pzn ? resolvingPzns.value.has(med.pzn) : false;
-
+function MedicationCard({ med }: { med: Medication }) {
   const displayName = med.brandName
     || med.activeIngredients.map(a => a.name).join(', ')
     || (med.pzn ? `PZN ${med.pzn} (Name unbekannt)` : 'Unbekanntes Medikament');
 
   return (
     <div>
-      <div class="med-name">
-        {displayName}
-        {isUnresolved && (
-          <button
-            class="btn"
-            style={{ marginLeft: '8px', padding: '2px 8px', fontSize: '0.85em' }}
-            disabled={isResolving}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              onResolve(med);
-            }}
-          >
-            {isResolving ? 'Wird aufgelöst...' : 'Auflösen'}
-          </button>
-        )}
-      </div>
+      <div class="med-name">{displayName}</div>
       {med.activeIngredients.length > 0 && (
         <div class="med-detail">
           {med.activeIngredients.map(a => a.strength ? `${a.name} ${a.strength}` : a.name).join(', ')}
