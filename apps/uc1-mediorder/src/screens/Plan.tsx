@@ -7,6 +7,7 @@ import { getSectionLabel, formatDosage, type Medication, type Section } from '@m
 const stored = signal<StoredBmp | null>(null);
 const loading = signal(true);
 const selectedMeds = signal<Set<string>>(new Set());
+const showXml = signal(false);
 
 /** Create a stable key for a medication within the plan. */
 function medKey(sectionIndex: number, entryIndex: number): string {
@@ -67,6 +68,20 @@ export function PlanScreen({ id }: { id: number }) {
         <div><strong>{bmp.patient.givenName} {bmp.patient.familyName}</strong>{bmp.patient.birthDate && <>, geb. {formatDate(bmp.patient.birthDate)}</>}</div>
         <div class="meta">{bmp.author.name}{bmp.author.printTimestamp && <>, {formatDate(bmp.author.printTimestamp)}</>}</div>
       </div>
+
+      {/* Raw XML debug */}
+      <button
+        class="btn"
+        style={{ fontSize: '0.8em', padding: '2px 8px', marginBottom: '8px' }}
+        onClick={() => { showXml.value = !showXml.value; }}
+      >
+        {showXml.value ? 'XML ausblenden' : 'XML anzeigen'}
+      </button>
+      {showXml.value && stored.value?.rawXml && (
+        <pre style={{ fontSize: '0.7em', overflow: 'auto', background: '#f5f5f5', padding: '8px', borderRadius: '4px', marginBottom: '12px', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+          {formatXml(stored.value.rawXml)}
+        </pre>
+      )}
 
       {/* Observations */}
       {bmp.observations.allergies && (
@@ -172,6 +187,16 @@ function countMeds(sections: Section[]): number {
     }
   }
   return count;
+}
+
+function formatXml(xml: string): string {
+  let indent = 0;
+  return xml.replace(/>\s*</g, '>\n<').replace(/(<[^/][^>]*[^/]>)|(<\/[^>]+>)|(<[^>]+\/>)/g, (match) => {
+    if (match.startsWith('</')) indent--;
+    const pad = '  '.repeat(Math.max(0, indent));
+    if (match.startsWith('<') && !match.startsWith('</') && !match.endsWith('/>')) indent++;
+    return pad + match;
+  });
 }
 
 // Export selectedMeds for use by Order screen
