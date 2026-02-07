@@ -13,7 +13,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const INPUT = path.join(__dirname, '..', 'Rezepte_list.txt');
+const INPUT = path.join(__dirname, '..', process.argv[2] || 'Rezepte_list.txt');
 const OUTPUT = path.join(__dirname, 'rezepte-pzn.json');
 
 const raw = fs.readFileSync(INPUT, 'utf-8');
