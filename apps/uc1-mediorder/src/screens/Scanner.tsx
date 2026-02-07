@@ -63,12 +63,12 @@ export function ScannerScreen() {
       )}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '16px', alignItems: 'center' }}>
+        <a href="#/history" class="btn btn-secondary btn-block">
+          Gescannte Medikationspläne
+        </a>
         <button class="btn btn-secondary btn-block" onClick={loadDemo}>
           Demo-Daten laden
         </button>
-        <a href="#/history" class="btn btn-secondary btn-block">
-          Verlauf anzeigen
-        </a>
       </div>
     </div>
   );
