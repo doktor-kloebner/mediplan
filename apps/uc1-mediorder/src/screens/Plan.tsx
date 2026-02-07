@@ -65,8 +65,8 @@ export function PlanScreen({ id }: { id: number }) {
     <div>
       {/* Patient info */}
       <div class="patient-bar">
-        <div><strong>{bmp.patient.givenName} {bmp.patient.familyName}</strong>{bmp.patient.birthDate && <>, geb. {formatDate(bmp.patient.birthDate)}</>}</div>
-        <div class="meta">{bmp.author.name}{bmp.author.printTimestamp && <>, {formatDate(bmp.author.printTimestamp)}</>}</div>
+        <div>Medikationsplan für <strong>{bmp.patient.givenName} {bmp.patient.familyName}</strong>{bmp.patient.birthDate && <>, geb. {formatDate(bmp.patient.birthDate)}</>}</div>
+        <div class="meta">erstellt von {bmp.author.name}{bmp.author.printTimestamp && <>, {formatDate(bmp.author.printTimestamp)}</>}</div>
       </div>
 
       {/* Raw XML debug */}
